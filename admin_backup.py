@@ -68,25 +68,16 @@ class Admin:
         else:
             return False
             
-    def get_doctor_details(self, doctors) :
+    def get_doctor_details(self) :
         """
         Get the details needed to add a doctor
         Returns:
             first name, surname and ...
                             ... the speciality of the doctor in that order.
         """
-
+        #ToDo2 done!
         doc_fname=input("Enter the first name of the doctor:")
         doc_sname=input("Enter the surname of the doctor:")
-        # check if the name is already registered
-        name_exists = self.is_exists(doctors, doc_fname, doc_sname)
-        while name_exists==True:
-            print("Enter name again!")
-            doc_fname=input("First-name: ")
-            doc_sname=input("Last-name: ")
-            name_exists=self.is_exists(doctors, doc_fname, doc_sname)
-        #ToDo2 done!
-        
         doc_spec=input("Enter the speciality of the doctor:")
         doc_username=input("Enter username for doctor: ")
         while True:
@@ -125,9 +116,15 @@ class Admin:
             #ToDo4
 
             # get the doctor details
-            doc_fname, doc_sname, doc_spec, doc_uname, doc_pass=self.get_doctor_details(doctors)
+            doc_fname, doc_sname, doc_spec, doc_uname, doc_pass=self.get_doctor_details()
 
-            
+            # check if the name is already registered
+            name_exists = False
+            for doctor in doctors:
+                if doc_fname == doctor.get_first_name() and doc_sname == doctor.get_surname():
+                    print('Name already exists.')
+                    #ToDo5 
+                    break
 
             #ToDo6
             # add the doctor ...
@@ -358,11 +355,3 @@ class Admin:
             #ToDo16
             print("invalid choice")
 
-    def is_exists(self, doctors,fname, sname):
-        print("i am in is_exist")
-        for doctor in doctors:
-            if fname == doctor.get_first_name() and sname == doctor.get_surname():
-                print('Name already exists.')
-                #ToDo5 
-                return True
-            
