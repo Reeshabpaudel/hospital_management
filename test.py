@@ -1,21 +1,22 @@
 from Doctor import Doctor
 from Patient import Patient
-def login():
-    user=None
-    while user==None:
-        username=input("Username:")
-        for file_name in ["admin_file.txt", "doctor_file.txt", "patient_file.txt"]:
-            file=open(file_name, "r")
-            data=file.read().replace("\n",";").split(";")
-            if username in data:
-                password=input("password:")
-                if data[data.index(username)+1]==password:
-                    print("User found!")
-                    user=file_name.split("_")[0]
-                    return user
-                else:
-                    print("Wrong Password!Try again")
-            file.close()
+import os
+# def login():
+#     user=None
+#     while user==None:
+#         username=input("Username:")
+#         for file_name in ["admin_file.txt", "doctor_file.txt", "patient_file.txt"]:
+#             file=open(file_name, "r")
+#             data=file.read().replace("\n",";").split(";")
+#             if username in data:
+#                 password=input("password:")
+#                 if data[data.index(username)+1]==password:
+#                     print("User found!")
+#                     user=file_name.split("_")[0]
+#                     return user
+#                 else:
+#                     print("Wrong Password!Try again")
+#             file.close()
 
 
 
@@ -75,3 +76,77 @@ def login():
 
 # if __name__ == '__main__':
 #     main()
+
+# def get_data():
+#     with open("admin_file.txt",'r') as file:
+#         data=file.read().split(";")
+#         username=data[0]
+#         password=data[1]
+#         address=data[2]
+#     return username, password, address
+
+# def updatate_details(old, new):
+#     file=open("admin_file.txt","r")
+#     data=file.read()
+#     print(data)
+#     data_temp=data.replace(old, new)
+#     print(data)
+#     file.close()
+#     temp=open("temp_file.txt","w")
+#     temp.write(data_temp)
+#     temp.close()
+#     os.remove("admin_file.txt")
+#     os.rename("temp_file.txt","admin_file.txt")
+# def update_data():
+#     old_uname, old_pass, old_add=get_data()
+#     print("""
+#     Menu:
+#     1, username
+#     2, password
+#     3, address""")
+#     op=input("Select : ")
+#     # file=open("admin_file.txt","r")
+#     # temp_file=open("temp_file.txt",'w')
+#     # data=file.read().split(';')
+#     if op=="1":
+#         new_name=input("Enter new name: ")
+#         updatate_details(old_uname, new_name)
+#         # for item in data:
+#         #     if(item==old_uname):
+#         #         temp_file.write(f"{new_name};")
+#         #     else:
+#         #         temp_file.write(f"{item};")
+#         # file.close()
+#         # temp_file.close()
+#         # os.remove("admin_file.txt")
+#         # os.rename("temp_file.txt","admin_file.txt")
+
+#     elif op=="2":
+#         new_pass=input("new pass: ")
+#         updatate_details(old_pass, new_pass)
+#     elif op=="3":
+#         new_add=input("new add:")
+#         updatate_details(old_add, new_add)
+#     else:
+#         print("Invalid Choice")
+# update_data()
+# print(get_data())
+
+# with open("doctor_file.txt") as file:
+    # data=file.readline().split(";")
+    # print(data)
+    # patient_str=data[6][13:-1].split(",")
+    # print(patient_str)
+    # file.close()
+
+# my_doc=Doctor('reeshab',"paudel","heart",["sara"],["3pm","sara"])
+# print(my_doc)
+# my_patient=Patient("first","anu",23,8787,"999")
+# print(my_patient)
+
+# with open("doctor_file.txt",'a') as file:
+#     file.write("\nname;bla;bla")
+
+# my_list=["ka",'kha','ga','ghaa']
+# print(my_list.index())
+# my_list.insert(my_list.index("kha"),"papaya")

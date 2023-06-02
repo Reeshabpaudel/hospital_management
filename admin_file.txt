@@ -1,1 +1,1 @@
-admin;123;kathmandu
+reeshab;pass;kathmandu

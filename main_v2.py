@@ -17,14 +17,15 @@ def main():
     doctors=[]
     patients=[]
 
-    with open("admin_file.txt", 'r') as file:
-        data=file.readline().split(";")
-        admin=Admin(data[0], data[1], data[2])
+
+    admin=Admin()
     with open("doctor_file.txt",'r') as file:
         line=file.readline()
         while line!="":
             data=line.split(";")
-            doctors.append(Doctor(data[2], data[3], data[4]))
+            patient_str=data[5][13:-1].split(",")
+            appoinment_str=data[6][17:-2].split(",")
+            doctors.append(Doctor(data[2], data[3],data[0],data[1],data[4],patient_str,appoinment_str))
             line=file.readline()
     with open("patient_file.txt",'r') as file:
         line=file.readline()
@@ -124,7 +125,7 @@ def login():
         for file_name in ["admin_file.txt", "doctor_file.txt", "patient_file.txt"]:
             file=open(file_name, "r")
             data=file.read().replace("\n",";").split(";")
-            if username in data:
+            if username ==data[0]:
                 password=input("password:")
                 if data[data.index(username)+1]==password:
                     print("User found!")

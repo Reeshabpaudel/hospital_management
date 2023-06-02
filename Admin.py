@@ -1,19 +1,21 @@
 from Doctor import Doctor
-
+import os
 
 class Admin:
     """A class that deals with the Admin operations"""
-    def __init__(self, username, password, address = ''):
+    def __init__(self):
         """
         Args:
             username (string): Username
             password (string): Password
             address (string, optional): Address Defaults to ''
         """
-
-        self.__username = username
-        self.__password = password
-        self.__address =  address
+        file=open("admin_file.txt",'r')
+        data=file.read().split(';')
+        self.__username = data[0]
+        self.__password = data[1]
+        self.__address =  data[2]
+        file.close()
 
     def view(self,a_list):
         """
@@ -132,7 +134,10 @@ class Admin:
             #ToDo6
             # add the doctor ...
             # ... to the list of doctors
-            doctors.append(Doctor(doc_fname, doc_sname, doc_spec))           
+            doctors.append(Doctor(doc_fname, doc_sname, doc_spec, doc_uname, doc_pass,))           
+            with open("doctor_file.txt",'a') as file:
+                file.write(f"\n{doc_uname};{doc_pass};{doc_fname};{doc_sname};{doc_spec};patient_list[];appoinment_list[]")
+                file.close()
             print('Doctor registered.')
             self.view(doctors)
 
@@ -140,14 +145,14 @@ class Admin:
         elif op == '2':
             print("-----List of Doctors-----")
             #ToDo7
-            print('ID |          Full name           |  Speciality')
+            print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
             self.view(doctors)
 
         # Update
         elif op == '3':
             while True:
                 print("-----Update Doctor`s Details-----")
-                print('ID |          Full name           |  Speciality')
+                ("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
                 self.view(doctors)
                 try:
                     index = int(input('Enter the ID of the doctor: ')) - 1
@@ -160,17 +165,22 @@ class Admin:
                         print(' 3 Speciality')
                         f_op = int(input('Input: ')) # make the user input lowercase
                         if f_op==1:
+                            print(doctors[index])
                             new_firstname=input("Enter the new first name: ")
+                            doctors[index].update_details(doctors[index].get_first_name(), new_firstname)
                             doctors[index].set_first_name(new_firstname)
+                            
                             print("Your first name is updated.")
                             self.view(doctors)
                         elif f_op==2:
                             new_surname=input("Enter the new surname: ")
+                            doctors[index].update_details(doctors[index].get_surname(), new_surname)
                             doctors[index].set_surname(new_surname)
                             print("Your surname is updated.")
                             self.view(doctors)
                         elif f_op==3:
                             new_spec=input("Enter the new speciality: ")
+                            doctors[index].update_details(doctors[index].get_speciality(), new_spec)
                             doctors[index].set_speciality(new_spec)
                             self.view(doctors)
                         else:
@@ -189,12 +199,13 @@ class Admin:
         # Delete
         elif op == '4':
             print("-----Delete Doctor-----")
-            print('ID |          Full Name           |  Speciality')
+            print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
             self.view(doctors)
 
             index = int(input('Enter the ID of the doctor to be deleted: '))-1
             doctor_index=self.find_index(index, doctors)
             if(doctor_index!=False):
+                doctors[index].delete_doctor(doctors[index].get_first_name())
                 doctors.pop(index)
                 print("Doctor deleted")
                 self.view(doctors)
@@ -251,7 +262,7 @@ class Admin:
         patients[patient_index].print_symptoms() # print the patient symptoms
 
         print('--------------------------------------------------')
-        print('ID |          Full Name           |  Speciality   ')
+        print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
         self.view(doctors)
         doctor_index = input('Please enter the doctor ID: ')
 
@@ -265,6 +276,7 @@ class Admin:
                 # link the patients to the doctor and vice versa
                 #ToDo11
                 patients[patient_index].link(doctors[doctor_index].full_name())
+                doctors[doctor_index].add_patient(patients[patient_index].full_name())
                 
                 print('The patient is now assign to the doctor.')
                 self.view(patients)
@@ -319,9 +331,9 @@ class Admin:
         print(' 1 Username')
         print(' 2 Password')
         print(' 3 Address')
-        op = int(input('Input: '))
-
-        if op == 1:
+        op = input('Input: ')
+        
+        if op == "1":
             #ToDo14
             self.admin_details()
             username1=input('Enter the new username: ')
@@ -329,40 +341,59 @@ class Admin:
             username2=input("Enter the new username again: ")
             if(username1==username2):
                 print("Username matched.")
-                self.__username=username1
+                self.upadate_admin_details(self.__username,username1)
                 print("--------------------------------------")
                 self.admin_details()
                 print("----------Username updated---------")
             else:
                 print("Username not matched")
 
-        elif op == 2:
+        elif op == "2":
             self.admin_details()
             password = input('Enter the new password: ')
             # validate the password
             if password == input('Enter the new password again: '):
-                self.__password = password
+                print("Password matched")
+                self.upadate_admin_details(self.__password,password)
+                print("--------------------------------------")
                 self.admin_details()
                 print("------Password updated-----")
+            else:
+                print("Password not matched")
 
-        elif op == 3:
+        elif op == "3":
             #ToDo15
             self.admin_details()
             address=input("Enter the new address: ")
             #validate the address
             if address==input("Enter the new address again: "):
-                self.__address=address
+                print("Address matched!")
+                self.upadate_admin_details(self.__address,address)
+                print("--------------------------------------")
                 self.admin_details()
-                print("address updated.")
+                print("-----Address updated-----")
+            else:
+                print("Address not matched!")
         else:
             #ToDo16
             print("invalid choice")
 
     def is_exists(self, doctors,fname, sname):
-        print("i am in is_exist")
         for doctor in doctors:
             if fname == doctor.get_first_name() and sname == doctor.get_surname():
                 print('Name already exists.')
                 #ToDo5 
                 return True
+            
+    def upadate_admin_details(self, old, new):
+        file=open("admin_file.txt","r")
+        data=file.read()
+        data_temp=data.replace(old, new)
+        file.close()
+        temp=open("temp_file.txt","w")
+        temp.write(data_temp)
+        temp.close()
+        os.remove("admin_file.txt")
+        os.rename("temp_file.txt","admin_file.txt")
+        self.__init__()
             

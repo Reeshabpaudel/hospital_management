@@ -46,7 +46,6 @@ class Patient:
         #ToDo4 done!
 
 
-    # def __str__(self):
-    #     return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'
     def __str__(self):
-        return (f"{self.full_name()},{self.__doctor},{self.__age},{self.__mobile},{self.__postcode}")
+        return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'
+   
