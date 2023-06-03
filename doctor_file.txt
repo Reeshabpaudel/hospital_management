@@ -1,4 +1,3 @@
-john123;jhonny;John;Smith;Internal Med.;patient_list[Sara,John,whoever the f];appointment_list[1am,Sara,2pm,John]
-jone@;password;joneJone;Smith;Pediatrics;patient_list[];appointment_list[]
+fine arts;password;joneJone;Smith;Pediatrics;patient_list[];appointment_list[]
 mynameisjone;123;Jone;Carlos;Cardiology;patient_list[];appointment_list[]
 mynameispappu;passpappu;pappu;academy;videos;patient_list[];appoinment_list[]

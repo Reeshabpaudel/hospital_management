@@ -48,8 +48,13 @@ class Doctor:
         #ToDo7 done!
         self.__speciality=new_speciality
 
-    def add_patient(self, patient):
-        self.__patients.append(patient)
+    def add_patient(self, patient_name):
+        self.__patients.append(patient_name)
+        # with open("doctor_file.txt","r") as file:
+        #     lines=file.readlines()
+        #     for each_line in lines:
+        #         if patient
+
 
     def add_appoinments(self, appointment):
         self.__appoinments.append(appointment)

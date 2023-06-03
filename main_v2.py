@@ -31,7 +31,8 @@ def main():
         line=file.readline()
         while line!="":
             data=line.split(";")
-            patients.append(Patient(data[2], data[3], data[4], data[5], data[6]))
+            print(data)
+            patients.append(Patient(data[2], data[3], data[4], data[5], data[6], data[7]))
             line=file.readline()
     with open("discharged_patients_file.txt",'r') as file:
         line=file.readline()
@@ -63,7 +64,9 @@ def main():
             print(' 3- View discharged patient')
             print(' 4- Assign doctor to a patient')
             print(' 5- Update admin detais')
-            print(' 6- Quit')
+            print(' 6- Register/view patient')
+            print(' 7- Get management report')
+            print(' 8- Quit')
 
             # get the option
             op = input('Option: ')
@@ -93,7 +96,10 @@ def main():
             elif op == '3':
                 # 3 - view discharged patients
                 #ToDo4
-                admin.view_discharged(discharged_patients)
+                if discharged_patients==[]:
+                    print("--------------No patients discharged yet------------")
+                else:
+                    admin.view_discharged(discharged_patients)
 
             elif op == '4':
                 # 4- Assign doctor to a patient
@@ -103,9 +109,15 @@ def main():
                 # 5- Update admin detais
                 admin.update_details()
 
-            elif op == '6':
+            elif op=='6':
+                admin.patient_management(patients)
+
+            elif op == '7':
                 # 6 - Quit
                 #ToDo5
+                pass
+            
+            elif op=='8':
                 break
 
             else:

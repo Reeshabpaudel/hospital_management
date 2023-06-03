@@ -1,3 +1,6 @@
-sara;123;Sara;Smith;20;07012345678;B1 234
-mike;123;Mike;Jones;37;07555551234;L2 2AB
-david;123;Daivd;Smith;15;07123456789;C1 ABC
+sara;123;Sara;Smith;20;07012345678;B1 234;cough, fever;symptoms
+mike;123;Mike;Jones;37;07555551234;L2 2AB;symptoms
+david;123;Daivd;Smith;15;07123456789;C1 ABC;symptoms
+yub;yub_pass;yubraj;nepal;12;9846;gfua;nose bleeding, fatigue
+kevin123;kevin123;kevin;karki;19;98576..;thamel;chest pain
+anush;nopass;anushna;chaulagain;20;98..;house;no dedication

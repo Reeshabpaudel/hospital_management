@@ -45,6 +45,15 @@ class Patient:
         print(self.symptoms)
         #ToDo4 done!
 
+    def delete_patient(self, name):
+        with open("patient_file.txt",'r') as file:
+            lines=file.readlines()
+            for each_line in lines:
+                if name in each_line:
+                    lines.pop(lines.index(each_line))
+        with open("patient_file.txt",'w') as file:
+            for each_line in lines:
+                file.write(each_line)
 
     def __str__(self):
         return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'

@@ -1,4 +1,5 @@
 from Doctor import Doctor
+from Patient import Patient
 import os
 
 class Admin:
@@ -83,7 +84,7 @@ class Admin:
         # check if the name is already registered
         name_exists = self.is_exists(doctors, doc_fname, doc_sname)
         while name_exists==True:
-            print("Enter name again!")
+            print("Please enter name again!")
             doc_fname=input("First-name: ")
             doc_sname=input("Last-name: ")
             name_exists=self.is_exists(doctors, doc_fname, doc_sname)
@@ -96,9 +97,8 @@ class Admin:
             pass_confirm=input("Confirm password: ")
             if doc_pass==pass_confirm:
                 return doc_fname, doc_sname, doc_spec, doc_username, doc_pass
-                break
             else:
-                print("Sorry, password couln't be confirmed")
+                print("Sorry, password couldn't be confirmed")
 
     def doctor_management(self, doctors):
         """
@@ -217,6 +217,44 @@ class Admin:
         else:
             print('Invalid operation choosen. Check your spelling!')
 
+    def get_patient_detail(self):
+        #get the details of patients
+        p_fname=input("Enter the first name of patient: ")
+        p_sname=input("Enter the surname of the patient: ")
+        p_symp=input("Enter the symptoms: ")
+        p_age=input("Enter age: ")
+        p_phnum=input("Enter phone number: ")
+        p_post=input("Enter postcode: ")
+        p_uname=input("Create a username so that patient can log-in: ")
+        p_pass=input("Create a password: ")
+        if p_pass==input("Confirm password: "):
+            return p_uname, p_pass, p_fname, p_sname, p_age,p_phnum, p_post, p_symp
+        else:
+            print("Sorry, password couldn't be confirmed")
+
+    
+    
+    def patient_management(self, patients):
+        print("-----Patient Management-----")
+
+        # menu
+        print('Choose the operation:')
+        print(' 1 - Register')
+        print(' 2 - View')
+        op=input("Please inter your option: ")
+        if op=="1":
+            print("-------Register patients------")
+            print("Enter the patient's details:")
+            pat_uname,pat_pass,pat_name,pat_surname,pat_age,pat_ph_num,pat_post,pat_symp=self.get_patient_detail()
+            patients.append(Patient(pat_name, pat_surname, pat_age, pat_ph_num,pat_post,pat_symp))
+            with open("patient_file.txt",'a') as file:
+                file.write(f"\n{pat_uname};{pat_pass};{pat_name};{pat_surname};{pat_age};{pat_ph_num};{pat_post};{pat_symp}")
+            print("Patient registered.")
+        elif op=="2":
+            print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+            self.view(patients)
+        else:
+            print("Sorry, operation not identified")
 
     def view_patient(self, patients):
         """
@@ -279,6 +317,8 @@ class Admin:
                 doctors[doctor_index].add_patient(patients[patient_index].full_name())
                 
                 print('The patient is now assign to the doctor.')
+                print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+
                 self.view(patients)
 
             # if the id is not in the list of doctors
@@ -301,6 +341,18 @@ class Admin:
         try:
             patient_index = int(input('Please enter the patient ID: '))-1
             if patient_index in range(len(patients)):
+                name=patients[patient_index].full_name()
+                with open("patient_file.txt","r") as file:
+                    line=file.readline()
+                    while line!="":
+                        check_name=line.split(";")[2]+" "+line.split(";")[3]
+                        if check_name==name:
+                            with open("discharged_patients_file.txt",'a') as write_file:
+                                write_file.write(line)
+                                print(name.split()[0])
+                                patients[patient_index].delete_patient(name.split()[0])
+                      
+                        line=file.readline()
                 discharged_patients.append(patients.pop(patient_index))
             else:
                 print("id not found")
