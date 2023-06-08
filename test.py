@@ -150,3 +150,46 @@ import os
 # my_list=["ka",'kha','ga','ghaa']
 # print(my_list.index())
 # my_list.insert(my_list.index("kha"),"papaya")
+# class Parent:
+#     def __init__(self, name):
+#         self.__name=name
+
+# class Child(Parent):
+#     def __init__(self, name, surname):
+#         super().__init__(name)
+#         self.__surname=surname
+
+#     def get_name(self):
+#         return self._Parent__name + " " + self.__surname
+
+# obj=Child("name","surname")
+# print(obj.get_name())
+
+
+def add_patient(patient_name, doc_name):
+    read_file=open("doctor_file.txt",'r')
+    write_file=open("temp_file.txt",'w')
+    line=read_file.readline()
+    while(line!=""):
+        print(line)
+        if doc_name in line:
+            print(f"passed line:{line}")
+            string=''
+            data=line.split(";")
+            print(data)
+            print(data[5])
+            data[5]=data[5].replace('[]',f'[{patient_name}]')
+            print(data[5])
+            for item in data:
+                string+=item+";"
+            print(string)
+            write_file.write(string)
+        else:
+            write_file.write(line)
+        line=read_file.readline()
+    read_file.close()
+    write_file.close()
+    os.remove("doctor_file.txt")
+    os.rename("temp_file.txt","doctor_file.txt")
+
+obj=add_patient("kevin","pappu")

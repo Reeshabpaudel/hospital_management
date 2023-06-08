@@ -32,13 +32,13 @@ def main():
         while line!="":
             data=line.split(";")
             print(data)
-            patients.append(Patient(data[2], data[3], data[4], data[5], data[6], data[7]))
+            patients.append(Patient(data[2], data[3], data[0], data[1], data[4], data[5], data[6], data[7], data[8], data[9]))
             line=file.readline()
     with open("discharged_patients_file.txt",'r') as file:
         line=file.readline()
         while line!="":
             data=line.split(";")
-            discharged_patients.append(Patient(data[2], data[3], data[4], data[5], data[6]))
+            discharged_patients.append(Patient(data[2], data[3], data[0], data[1], data[4], data[5], data[6]))
             line=file.readline()
 
 
@@ -110,12 +110,12 @@ def main():
                 admin.update_details()
 
             elif op=='6':
-                admin.patient_management(patients)
+                admin.patient_management(patients, doctors)
 
             elif op == '7':
                 # 6 - Quit
                 #ToDo5
-                pass
+                admin.display_report(patients, doctors)
             
             elif op=='8':
                 break

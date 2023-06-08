@@ -27,6 +27,12 @@ class Admin:
         for index, item in enumerate(a_list):
             print(f'{index+1:3}|{item}')
 
+    def for_report(self, a_list):
+        string=''
+        for index, item in enumerate(a_list):
+            string+=(f'{index+1:3}|{item}\n')
+        return string
+
     def admin_details(self):
         print(f"Username:{self.__username}")
         print(f"Password:{self.__password}")
@@ -91,9 +97,9 @@ class Admin:
         #ToDo2 done!
         
         doc_spec=input("Enter the speciality of the doctor:")
-        doc_username=input("Enter username for doctor: ")
+        doc_username=input("Enter username for doctor(actual name not recommended): ")
         while True:
-            doc_pass=input("Create a password: ")
+            doc_pass=input("Create a password(try not to include your name): ")
             pass_confirm=input("Confirm password: ")
             if doc_pass==pass_confirm:
                 return doc_fname, doc_sname, doc_spec, doc_username, doc_pass
@@ -127,19 +133,22 @@ class Admin:
             #ToDo4
 
             # get the doctor details
-            doc_fname, doc_sname, doc_spec, doc_uname, doc_pass=self.get_doctor_details(doctors)
+            try:
+                doc_fname, doc_sname, doc_spec, doc_uname, doc_pass=self.get_doctor_details(doctors)
 
-            
+                
 
-            #ToDo6
-            # add the doctor ...
-            # ... to the list of doctors
-            doctors.append(Doctor(doc_fname, doc_sname, doc_spec, doc_uname, doc_pass,))           
-            with open("doctor_file.txt",'a') as file:
-                file.write(f"\n{doc_uname};{doc_pass};{doc_fname};{doc_sname};{doc_spec};patient_list[];appoinment_list[]")
-                file.close()
-            print('Doctor registered.')
-            self.view(doctors)
+                #ToDo6
+                # add the doctor ...
+                # ... to the list of doctors
+                doctors.append(Doctor(doc_fname, doc_sname, doc_spec, doc_uname, doc_pass,))           
+                with open("doctor_file.txt",'a') as file:
+                    file.write(f"\n{doc_uname};{doc_pass};{doc_fname};{doc_sname};{doc_spec};patient_list[];appoinment_list[]")
+                    file.close()
+                print('Doctor registered.')
+                self.view(doctors)
+            except TypeError:
+                print("Please try again!")
 
         # View
         elif op == '2':
@@ -205,7 +214,7 @@ class Admin:
             index = int(input('Enter the ID of the doctor to be deleted: '))-1
             doctor_index=self.find_index(index, doctors)
             if(doctor_index!=False):
-                doctors[index].delete_doctor(doctors[index].get_first_name())
+                doctors[index].delete_person(doctors[index].get_first_name())
                 doctors.pop(index)
                 print("Doctor deleted")
                 self.view(doctors)
@@ -225,8 +234,8 @@ class Admin:
         p_age=input("Enter age: ")
         p_phnum=input("Enter phone number: ")
         p_post=input("Enter postcode: ")
-        p_uname=input("Create a username so that patient can log-in: ")
-        p_pass=input("Create a password: ")
+        p_uname=input("Create a username so that patient can log-in(recommended username is other than name): ")
+        p_pass=input("Create a password (try not to incude patient name): ")
         if p_pass==input("Confirm password: "):
             return p_uname, p_pass, p_fname, p_sname, p_age,p_phnum, p_post, p_symp
         else:
@@ -234,7 +243,7 @@ class Admin:
 
     
     
-    def patient_management(self, patients):
+    def patient_management(self, patients, doctors):
         print("-----Patient Management-----")
 
         # menu
@@ -245,11 +254,18 @@ class Admin:
         if op=="1":
             print("-------Register patients------")
             print("Enter the patient's details:")
-            pat_uname,pat_pass,pat_name,pat_surname,pat_age,pat_ph_num,pat_post,pat_symp=self.get_patient_detail()
-            patients.append(Patient(pat_name, pat_surname, pat_age, pat_ph_num,pat_post,pat_symp))
-            with open("patient_file.txt",'a') as file:
-                file.write(f"\n{pat_uname};{pat_pass};{pat_name};{pat_surname};{pat_age};{pat_ph_num};{pat_post};{pat_symp}")
-            print("Patient registered.")
+            try:
+                pat_uname,pat_pass,pat_name,pat_surname,pat_age,pat_ph_num,pat_post,pat_symp=self.get_patient_detail()
+                patients.append(Patient(pat_name, pat_surname, pat_uname, pat_pass, pat_age, pat_ph_num,pat_post,pat_symp))
+    
+                with open("patient_file.txt",'a') as file:
+                    file.write(f"\n{pat_uname};{pat_pass};{pat_name};{pat_surname};{pat_age};{pat_ph_num};{pat_post};{pat_symp};doctor;appointment")
+                print("Patient registered.")
+                op_1=input("Do you want to set doctor?(y/n) ")
+                if op_1.upper()=="YES" or op_1.upper()=='Y':
+                        self.assign_doctor_to_patient(patients, doctors)
+            except TypeError:
+                print("Try again")
         elif op=="2":
             print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
             self.view(patients)
@@ -350,7 +366,7 @@ class Admin:
                             with open("discharged_patients_file.txt",'a') as write_file:
                                 write_file.write(line)
                                 print(name.split()[0])
-                                patients[patient_index].delete_patient(name.split()[0])
+                                patients[patient_index].delete_person(name.split()[0])
                       
                         line=file.readline()
                 discharged_patients.append(patients.pop(patient_index))
@@ -449,3 +465,30 @@ class Admin:
         os.rename("temp_file.txt","admin_file.txt")
         self.__init__()
             
+    def display_report(self, patients, doctors):
+        import tkinter
+        self.window=tkinter.Tk()
+        self.window.title("Admin Management Report")
+        self.window.geometry("700x700")
+        self.doctor_frame=tkinter.Frame(self.window, bg="#EEF8FF")
+        self.patient_frame=tkinter.Frame(self.window)
+        self.doc_var=tkinter.StringVar()
+        self.pat_var=tkinter.StringVar()
+
+        self.heading=tkinter.Label(self.window, text="Management Report")
+        
+        self.pat_var.set(f"ID |      Full name               |  Speciality   |           Patients           |         Appoinments        \n{self.for_report(doctors)}")
+        self.doc_var.set(f"ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode \n{self.for_report(patients)}")
+    
+        self.display_doc_list=tkinter.Label(self.doctor_frame, textvariable=self.doc_var)
+        self.display_pat_list=tkinter.Label(self.patient_frame, textvariable=self.pat_var)
+
+        self.heading.pack(side="top")
+        self.doctor_frame.pack()
+        self.patient_frame.pack()
+
+        self.display_doc_list.pack()
+        self.display_pat_list.pack()
+
+
+        tkinter.mainloop()
