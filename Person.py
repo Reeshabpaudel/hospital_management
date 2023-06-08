@@ -31,11 +31,14 @@ class Person:
     def get_password(self):
         return self.password
     
+    def get_username(self):
+        return self.username
+    
     def set_password(self, new_pass):
         self.update_details(self.password, new_pass)
         self.password=new_pass
 
-    def get_username(self, new_uname):
+    def set_username(self, new_uname):
         self.update_details( self.first_name, new_uname)
         self.username=new_uname
 

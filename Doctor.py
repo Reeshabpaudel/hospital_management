@@ -14,7 +14,7 @@ class Doctor(Person):
         super().__init__(first_name, surname, username, password, "doctor")
         self.__speciality = speciality
         self.__patients=patients
-        self.__appoinments=appoinments
+        self.appoinments=appoinments
         
         
         
@@ -47,6 +47,27 @@ class Doctor(Person):
         write_file.close()
         os.remove("doctor_file.txt")
         os.rename("temp_file.txt","doctor_file.txt")
+
+    def add_appointment(self, date):
+        read_file=open("doctor_file.txt",'r')
+        write_file=open("temp_file.txt",'w')
+        line=read_file.readline()
+        while(line!=""):
+            if self.get_first_name() in line:
+    
+                data=line.split(";")
+                extract=data[7][13:-1]
+                data[7]=data[5].replace((extract),f"{extract+','+date}")
+                string=";".join(data)
+                write_file.write(string)
+            else:
+                write_file.write(line)
+            line=read_file.readline()
+        read_file.close()
+        write_file.close()
+        os.remove("doctor_file.txt")
+        os.rename("temp_file.txt","doctor_file.txt")
+
                     
 
 
@@ -56,4 +77,4 @@ class Doctor(Person):
 
 
     def __str__(self) :
-        return f"{self.full_name():^30}|{self.__speciality:^15}|{', '.join(self.__patients):^30}|{', '.join(self.__appoinments):^30}"
+        return f"{self.full_name():^30}|{self.__speciality:^15}|{', '.join(self.__patients):^30}|{', '.join(self.appoinments):^30}"

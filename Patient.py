@@ -21,7 +21,7 @@ class Patient(Person):
 
         #ToDo1 done!
         self.__doctor = doctor
-        self.appointmet=appointment
+        self.appointment=appointment
        
 
     
@@ -43,7 +43,6 @@ class Patient(Person):
         line=read_file.readline()
         while(line!=""):
             if self.get_first_name() in line:
-                string=''
                 data=line.split(";")
                 data[8]=doctor
                 string=";".join(data)
@@ -62,6 +61,26 @@ class Patient(Person):
         print(self.symptoms)
         #ToDo4 done!
 
+    def set_appointment(self, date):
+        self.appointmet=date
+        read_file=open("patient_file.txt",'r')
+        write_file=open("temp_file.txt",'w')
+        line=read_file.readline()
+        while(line!=""):
+            if self.get_first_name() in line:
+                string=''
+                data=line.split(";")
+                data[-1]=date
+                string=";".join(data)
+                write_file.write(string)
+            else:
+                write_file.write(line)
+            line=read_file.readline()
+        read_file.close()
+        write_file.close()
+        os.remove("patient_file.txt")
+        os.rename("temp_file.txt","patient_file.txt")
+        
 
     def __str__(self):
         return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'

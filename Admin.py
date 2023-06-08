@@ -161,7 +161,7 @@ class Admin:
         elif op == '3':
             while True:
                 print("-----Update Doctor`s Details-----")
-                ("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
+                print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
                 self.view(doctors)
                 try:
                     index = int(input('Enter the ID of the doctor: ')) - 1

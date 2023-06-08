@@ -31,7 +31,6 @@ def main():
         line=file.readline()
         while line!="":
             data=line.split(";")
-            print(data)
             patients.append(Patient(data[2], data[3], data[0], data[1], data[4], data[5], data[6], data[7], data[8], data[9]))
             line=file.readline()
     with open("discharged_patients_file.txt",'r') as file:
@@ -54,7 +53,7 @@ def main():
     #         break
     #     else:
     #         print('Try again')
-    if usertype=="admin":
+    if usertype[0]=="admin":
         print("You are logged in as admin")
         while True:
             # print the menu
@@ -123,12 +122,175 @@ def main():
             else:
                 # the user did not enter an option that exists in the menu
                 print('Invalid option. Try again')
-    elif usertype=="doctor":
-        print("Now doctor does what he does")
-    elif usertype=="patient":
-        print("now patient does what he does")
-    else:
-        pass 
+    elif usertype[0]=="doctor":
+        print("Welcome! You have logged in as a doctor")
+        docname=usertype[1]
+        for docs in doctors:
+            if docs.get_username()==docname:
+                me=docs
+        while True:
+            print("""
+    Choose operation:
+    1- View patients
+    2- Place patient under my care
+    3- View/Update my details
+    4- Change username/password
+    5- quit""")
+            op=input("Your option: ")
+            if op=="1":
+                print("-------Patient Details--------")
+                admin.view(patients)
+            elif op=="2":
+                print("-------Patient Details------")
+                admin.view(patients)
+                patient_index=input("Please enter the patient ID: ")
+                try:
+                    patient_index=int(patient_index)-1
+                    if patient_index not in range(len(patients)):
+                        print('The id entered was not found.')
+                        break
+                except ValueError:
+                    print("The id entered is not correct")
+                    break
+                me.add_patient(patients[patient_index].full_name())
+                patients[patient_index].link(me.full_name())
+
+            elif op=="3":
+                print("1- View Details")
+                print("2- Update Details")
+                op_t=input("Your choice: ")
+                if op_t=="1":
+                    print("------Your Details----")
+                    print("   |      Full name             |  Speciality   |           Patients           |         Appoinments        ")
+                    print(f"{'':3}|{me}")
+                elif op_t=="2":
+                        print('Choose the field to be updated:')
+                        print(' 1 First name')
+                        print(' 2 Surname')
+                        print(' 3 Speciality')
+                        f_op = input('Input: ') # make the user input lowercase
+                        if f_op=="1":
+                            new_firstname=input("Enter the new first name: ")
+                            me.update_details(me.get_first_name(), new_firstname)
+                            me.set_first_name(new_firstname)
+                            
+                            print("Your first name is updated.")
+                            print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
+                            admin.view(doctors)
+                        elif f_op=="2":
+                            new_surname=input("Enter the new surname: ")
+                            me.update_details(me.get_surname(), new_surname)
+                            me.set_surname(new_surname)
+                            print("Your surname is updated.")
+                            print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
+                            admin.view(doctors)
+                        elif f_op=="3":
+                            new_spec=input("Enter the new speciality: ")
+                            me.update_details(me.get_speciality(), new_spec)
+                            me.set_speciality(new_spec)
+                            print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
+                            admin.view(doctors)
+                        else:
+                            print("Field not available")
+                else:
+                    print("Sorry! Invalid option")
+            elif op=="4":
+                print("1- password")
+                print("2- username")
+                op_s=input("input: ")
+                if op_s=="1":
+                    username=input('Enter the new username: ')
+                    if username==input('Confirmed username again: '):
+                        print("Confirmed!")
+                        me.update_details(me.get_usernamem(), username)
+                    else:
+                        print("Sorry! couldn't be confirmed")
+                elif op_s=="2":
+                    password=input("Enter the new password:")
+                    if password==input("Confirm password:"):
+                        print("Confirmed")
+                        me.update_details(me.get_password(), password)
+                else:
+                    print()
+            elif op=="5":
+                break
+            else:
+                print("Invalid Option! Please try again.")
+
+    elif usertype[0]=="patient":
+        print("Welcome! You have logged in as patient")
+        pat_name=usertype[1]
+        for patient in patients:
+            if patient.get_username()==pat_name:
+                me=patient
+        while True:
+            print("""
+    Chose an option:
+    1- View details
+    2- Apply for appointment
+    3- Update Details
+    4- Change username/password
+    5- quit""")
+            op=input("Your option: ")
+            if op=="1":
+                print("----Your Details----")
+                print('          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                print(f"{me}")
+            elif op=="2":
+                appointment=input("Enter date and time for appointment:")
+                me.set_appointment(appointment)
+            elif op=="3":
+                print('Choose the field to be updated:')
+                print(' 1- First name')
+                print(' 2- Surname')
+                print(' 3- Symptoms')
+                
+                f_op = input('Input: ') # make the user input lowercase
+                if f_op=="1":
+                    new_firstname=input("Enter the new first name: ")
+                    me.update_details(me.get_first_name(), new_firstname)
+                    me.set_first_name(new_firstname)                
+                    print("Your first name is updated.")
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    admin.view(patients)
+                elif f_op=="2":
+                    new_surname=input("Enter the new surname: ")
+                    me.update_details(me.get_surname(), new_surname)
+                    me.set_surname(new_surname)
+                    print("Your surname is updated.")
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    admin.view(patients)
+                elif f_op=="3":
+                    new_symp=input("Enter the syptom: ")
+                    me.update_details(me.symptoms, new_symp)
+                    me.set_symptoms(new_symp)
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    admin.view(patients)
+                else:
+                    print("Field not available")
+            elif op=="4":
+                print("1- username")
+                print("2- password")
+                op_s=input("input: ")
+                if op_s=="1":
+                    username=input('Enter the new username: ')
+                    if username==input('Confirmed username again: '):
+                        print("Confirmed!")
+                        me.update_details(me.get_username(), username)
+                    else:
+                        print("Sorry! couldn't be confirmed")
+                elif op_s=="2":
+                    password=input("Enter the new password:")
+                    if password==input("Confirm password:"):
+                        print("Confirmed")
+                        me.update_details(me.get_password(), password)
+                else:
+                    print()
+            elif op=="5":
+                break
+            else:
+                print("Invalid Option! Please try again.")
+    
 
 def login():
     usertype=None
@@ -137,12 +299,11 @@ def login():
         for file_name in ["admin_file.txt", "doctor_file.txt", "patient_file.txt"]:
             file=open(file_name, "r")
             data=file.read().replace("\n",";").split(";")
-            if username ==data[0]:
+            if username in data:
                 password=input("password:")
                 if data[data.index(username)+1]==password:
-                    print("User found!")
                     usertype=file_name.split("_")[0]
-                    return usertype
+                    return usertype, username
                 else:
                     print("Wrong Password!Try again")
             file.close()
