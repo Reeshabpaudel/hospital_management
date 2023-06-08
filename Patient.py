@@ -68,7 +68,6 @@ class Patient(Person):
         line=read_file.readline()
         while(line!=""):
             if self.get_first_name() in line:
-                string=''
                 data=line.split(";")
                 data[-1]=date
                 string=";".join(data)
@@ -83,5 +82,5 @@ class Patient(Person):
         
 
     def __str__(self):
-        return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'
+        return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}|{self.symptoms:^30}|{self.appointment:^15}'
    

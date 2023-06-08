@@ -1,4 +1,3 @@
-fine arts;password;joneJone;Smith;Pediatrics;patient_list[kevin karki,usha nepal];appointment_list[]
 mynameisjone;123;Jone;Carlos;Cardiology;patient_list[kevin karki,usha nepal];appointment_list[]
 mynameispappu;pass;pappu;don;new_spec;patient_list[Daivd Smith,usha nepal];appoinment_list[]
 doc_uname;docpass;doc_fname;doc_lname;running;patient_list[patient_fname patient_lname,Mike Jones];appoinment_list[];

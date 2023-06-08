@@ -1,5 +1,5 @@
 sara;123;Sara;Smith;20;07012345678;B1 234;cough, fever;doc_fname doc_lname;not set
 mike;123;Mike;Jones;37;07555551234;L2 2AB;symptoms;doc_fname doc_lname; not set
-david;123;Daivd;Smith;15;07123456789;C1 ABC;symptoms;pappu don; not set
+david;123;Daivd;Smith;15;07123456789;C1 ABC;symptoms;pappu don;8th jan, 4pm
 other_uname;other_pass;patient_fname;patient_lname;23;9875223;66y;symptoms;pappu don;appoinment
-kanxi;password;usha;nepal;7;9879;67h;hey fever;pappu don;appointment;6pm 7 January
+kanxi;password;usha;nepal;7;9879;67h;hey fever;pappu don;5pm, 5th jan

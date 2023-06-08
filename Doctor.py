@@ -49,12 +49,13 @@ class Doctor(Person):
         os.rename("temp_file.txt","doctor_file.txt")
 
     def add_appointment(self, date):
+        self.__appoinments.append(date)
         read_file=open("doctor_file.txt",'r')
         write_file=open("temp_file.txt",'w')
         line=read_file.readline()
         while(line!=""):
             if self.get_first_name() in line:
-    
+
                 data=line.split(";")
                 extract=data[7][13:-1]
                 data[7]=data[5].replace((extract),f"{extract+','+date}")
@@ -69,12 +70,6 @@ class Doctor(Person):
         os.rename("temp_file.txt","doctor_file.txt")
 
                     
-
-
-
-    def add_appoinments(self, appointment):
-        self.__appoinments.append(appointment)
-
 
     def __str__(self) :
         return f"{self.full_name():^30}|{self.__speciality:^15}|{', '.join(self.__patients):^30}|{', '.join(self.appoinments):^30}"

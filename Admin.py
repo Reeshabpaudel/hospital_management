@@ -194,7 +194,6 @@ class Admin:
                             self.view(doctors)
                         else:
                             print("Field not available")
-                        break
                     else:
                         print("Doctor not found")
                         # doctor_index is the ID mines one (-1)
@@ -267,7 +266,7 @@ class Admin:
             except TypeError:
                 print("Try again")
         elif op=="2":
-            print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+            print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
             self.view(patients)
         else:
             print("Sorry, operation not identified")
@@ -279,7 +278,7 @@ class Admin:
             patients (list<Patients>): list of all the active patients
         """
         print("-----View Patients-----")
-        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
         #ToDo10
         self.view(patients)
 
@@ -293,7 +292,7 @@ class Admin:
         print("-----Assign-----")
 
         print("-----Patients-----")
-        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
         self.view(patients)
 
         patient_index = input('Please enter the patient ID: ')
@@ -333,7 +332,7 @@ class Admin:
                 doctors[doctor_index].add_patient(patients[patient_index].full_name())
                 
                 print('The patient is now assign to the doctor.')
-                print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
 
                 self.view(patients)
 
@@ -386,7 +385,7 @@ class Admin:
         """
 
         print("-----Discharged Patients-----")
-        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
         #ToDo13
         self.view(discharged_patients)
 
@@ -469,26 +468,71 @@ class Admin:
         import tkinter
         self.window=tkinter.Tk()
         self.window.title("Admin Management Report")
-        self.window.geometry("700x700")
+        self.window.geometry("800x700")
+        self.window.config(background='#eef8ff')
         self.doctor_frame=tkinter.Frame(self.window, bg="#EEF8FF")
-        self.patient_frame=tkinter.Frame(self.window)
-        self.doc_var=tkinter.StringVar()
-        self.pat_var=tkinter.StringVar()
+        self.patient_frame=tkinter.Frame(self.window, bg="#eef8ff")
+        # self.doc_var=tkinter.StringVar()
+        # self.pat_var=tkinter.StringVar()
 
-        self.heading=tkinter.Label(self.window, text="Management Report")
+        self.heading=tkinter.Label(self.window, text="Management Report", font=("", 20, "bold"), bg="#EEF8FF", pady=20)
         
-        self.pat_var.set(f"ID |      Full name               |  Speciality   |           Patients           |         Appoinments        \n{self.for_report(doctors)}")
-        self.doc_var.set(f"ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode \n{self.for_report(patients)}")
-    
-        self.display_doc_list=tkinter.Label(self.doctor_frame, textvariable=self.doc_var)
-        self.display_pat_list=tkinter.Label(self.patient_frame, textvariable=self.pat_var)
+        # self.pat_var.set(f"ID |      Full name               |  Speciality   |           Patients           |         Appoinments        \n{self.for_report(doctors)}")
+        # self.doc_var.set(f"ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode \n{self.for_report(patients)}")
+
+        self.display_doc_list=tkinter.Label(self.doctor_frame, text="Doctors List",bg="#EEF8FF", font=("",15,"underline"))
+        self.display_doc_list.grid(column=5, pady=15)
+
+        tkinter.Label(self.doctor_frame, text="Username", bg="#EEF8FF", font=("",14)).grid(row=1, column=1, padx=10, pady=10)
+        tkinter.Label(self.doctor_frame, text="Password", bg="#EEF8FF", font=("",14)).grid(row=1, column=2, padx=10, pady=10)
+        tkinter.Label(self.doctor_frame, text="First Name", bg="#EEF8FF", font=("",14)).grid(row=1, column=3, padx=10, pady=10)
+        tkinter.Label(self.doctor_frame, text="Last Name", bg="#EEF8FF", font=("",14)).grid(row=1, column=4, padx=10, pady=10)
+        tkinter.Label(self.doctor_frame, text="Speciality", bg="#EEF8FF", font=("",14)).grid(row=1, column=5, padx=10, pady=10)   
+        tkinter.Label(self.doctor_frame, text="Patients", bg="#EEF8FF", font=("",14)).grid(row=1, column=6, padx=10, pady=10)   
+        tkinter.Label(self.doctor_frame, text="Appointment", bg="#EEF8FF", font=("",14)).grid(row=1, column=7, padx=10, pady=10)   
+
+        with open("doctor_file.txt",'r') as file:
+            data=file.readlines()
+        for i in range (len(data)):
+            row_data=data[i].strip().split(";")
+            for j in range(len(row_data)):
+                doctor_info=tkinter.Label(self.doctor_frame,bg="#EEF8FF", text=row_data[j])
+                doctor_info.grid(row=i+2, column=j+1, padx=10, pady=10)
+
+
+
+        self.display_pat_list=tkinter.Label(self.patient_frame, text="Patients List",bg="#EEF8FF", font=("",15,"underline"))
+        self.display_pat_list.grid(column=5, pady=15)
+
+        # tkinter.Label(self.patient_frame, text="Name", bg="#EEF8FF").grid(row=1, column=1, padx=10, pady=10)
+        # tkinter.Label(self.patient_frame, text="Age", bg="#EEF8FF").grid(row=1, column=2, padx=10, pady=10)
+        # tkinter.Label(self.patient_frame, text="Address", bg="#EEF8FF").grid(row=1, column=3, padx=10, pady=10)
+
+        tkinter.Label(self.patient_frame, text="Username", bg="#EEF8FF", font=("",14)).grid(row=1, column=0, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Password", bg="#EEF8FF", font=("",14)).grid(row=1, column=1, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="First name", bg="#EEF8FF", font=("",14)).grid(row=1, column=2, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Last name", bg="#EEF8FF", font=("",14)).grid(row=1, column=3, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Age", bg="#EEF8FF", font=("",14)).grid(row=1, column=5, padx=4, pady=10)
+        tkinter.Label(self.patient_frame, text="Phone Number", bg="#EEF8FF", font=("",14)).grid(row=1, column=5, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Postcode", bg="#EEF8FF", font=("",14)).grid(row=1, column=6, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Symptoms", bg="#EEF8FF", font=("",14)).grid(row=1, column=7, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Doctor", bg="#EEF8FF", font=("",14)).grid(row=1, column=8, padx=10, pady=10)
+        tkinter.Label(self.patient_frame, text="Appointment", bg="#EEF8FF", font=("",14)).grid(row=1, column=9, padx=10, pady=10)
+
+
+        with open("patient_file.txt",'r') as file:
+            data=file.readlines()
+        for i in range (len(data)):
+            row_data=data[i].strip().split(";")
+            for j in range(len(row_data)):
+                patient_info=tkinter.Label(self.patient_frame, text=row_data[j], bg="#EEF8FF")
+                patient_info.grid(row=i+3, column=j, padx=10, pady=10)
 
         self.heading.pack(side="top")
         self.doctor_frame.pack()
         self.patient_frame.pack()
 
-        self.display_doc_list.pack()
-        self.display_pat_list.pack()
+
 
 
         tkinter.mainloop()

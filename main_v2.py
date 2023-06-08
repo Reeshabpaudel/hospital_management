@@ -234,11 +234,23 @@ def main():
             op=input("Your option: ")
             if op=="1":
                 print("----Your Details----")
-                print('          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
                 print(f"{me}")
             elif op=="2":
-                appointment=input("Enter date and time for appointment:")
-                me.set_appointment(appointment)
+                print("ID |      Full name               |  Speciality   |           Patients           |         Appoinments        ")
+                admin.view(doctors)
+                doctor_index=input("Please enter the doctor ID: ")
+                try:
+                    doctor_index=int(doctor_index)-1
+                    if admin.find_index(doctor_index, doctors)!=False:
+                        doctors[doctor_index].add_patient(me.full_name())
+                        appointment=input("Enter date and time for appointment:")
+                        print("Appointment is now set!")
+                        me.set_appointment(appointment)
+                    else:
+                        print("The entered id is not found")
+                except ValueError:
+                    print("The id entered is incorrect")
             elif op=="3":
                 print('Choose the field to be updated:')
                 print(' 1- First name')
@@ -251,20 +263,20 @@ def main():
                     me.update_details(me.get_first_name(), new_firstname)
                     me.set_first_name(new_firstname)                
                     print("Your first name is updated.")
-                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
                     admin.view(patients)
                 elif f_op=="2":
                     new_surname=input("Enter the new surname: ")
                     me.update_details(me.get_surname(), new_surname)
                     me.set_surname(new_surname)
                     print("Your surname is updated.")
-                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
                     admin.view(patients)
                 elif f_op=="3":
                     new_symp=input("Enter the syptom: ")
                     me.update_details(me.symptoms, new_symp)
                     me.set_symptoms(new_symp)
-                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+                    print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode |           Symptoms           |  Appointments   ')
                     admin.view(patients)
                 else:
                     print("Field not available")
@@ -285,7 +297,7 @@ def main():
                         print("Confirmed")
                         me.update_details(me.get_password(), password)
                 else:
-                    print()
+                    print("Field not available")
             elif op=="5":
                 break
             else:
